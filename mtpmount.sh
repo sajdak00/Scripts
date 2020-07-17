@@ -12,9 +12,6 @@ mountpoint="$(printf "$androiddev" | dmenu -i -p "Which mountpoint?")"
 mkdir -p ~/Cell/$androiddev && mp=~/Cell/$androiddev
 
 
-echo "OK" | dmenu -i -p "Tap Allow on your phone if it asks for permission and then press enter"
-
-
 mtumt="$(printf "Mount\nUnmount" | dmenu -i -p "Do you want mount or unmount your device?")"
 case "$mtumt" in
 	Mount) simple-mtpfs --device $device $mp
@@ -22,3 +19,9 @@ case "$mtumt" in
 	Unmount) fusermount -u $mp && rmdir ~/Cell/$androiddev
 	;;
 esac
+
+
+if [ $mtumt = 'Mount' ];
+then
+	echo "OK" | dmenu -i -p "Tap Allow on your phone if it asks for permission and then press enter" && simple-mtpfs --device $device $mp
+fi
